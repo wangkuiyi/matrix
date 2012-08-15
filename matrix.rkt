@@ -40,12 +40,12 @@
     ("  广告位和虚拟广告位" "virtual_place" "frontend" "mixer")
     ("广告请求" "request")
     ("检索条件构造" "query_build")
-    ("广告组触发和过滤" "retrieval_and_filtering")
+    ("广告组触发和过滤" "retrieval_and_filtering" "index" "mixer" "user server" "page server")
     ("  bigtable" "retrieval_bigtable")
     ("  index" "retrieval_index")
     ("  随机触发" "retrieval_random")
     ("  过滤" "filtering")
-    ("广告组的排序和计费" "ranking_and_pricing")
+    ("广告组的排序和计费" "ranking_and_pricing" "pCTR server" "pCTR training")
     ("  创意选择" "creative_selection")
     ("  广告的ranking" "ranking")
     ("  广告去重" "deduplication")
@@ -121,7 +121,8 @@
       (th ((scope "row"))
           (a ((href ,(format "features/~a.html" url)))
              ,(format "~a" readable)))
-      ,@(make-row-tds (sort deps module-name<?) sorted-module-list '()))))
+      ,@(make-row-tds (sort (map normalize-module-name deps) module-name<?)
+                      sorted-module-list '()))))
 
 (define css "\
     body {\n\
