@@ -55,6 +55,25 @@ the reverse proxy makes matrix.local:9988 looks like
 matrix.local/matrix by the Web browser.
 
 --------------------
+  Define a Matrix
+--------------------
+
+A table should be defined using a Lisp expression, or S-expression,
+with the following format:
+
+(("column head 1"
+  "column head 2"
+  ...
+  )
+ (
+  ("row head 1" "hyperlink 1" "column head" "column head" ...)
+  ("row head 2" "hyperlink 2" "column head" "column head" ...)
+  ...
+  ))
+
+For an example, please refer to table.ss in the source tree.
+
+--------------------
   Use It!
 --------------------
 
