@@ -13,7 +13,7 @@ request with an S-expression defining a 2D table, or a GET request.\
 In the former case, matrix-server renders the S-expression into an\
 HTML table and returns the HTML code.  In the latter case,\
 matrix-server displays this information.")
-     (p "the S-expression should have the following format:"
+     (p "The S-expression should have the following format:"
         (pre "
 ((\"column head 1\"\n\
   \"column head 2\"\n\
@@ -21,7 +21,9 @@ matrix-server displays this information.")
   )\n\
  (\n\
   (\"row head 1\" \"hyperlink 1\" \"column head\" \"column head\" ...)\n\
-  (\"row head 2\" \"hyperlink 2\" \"column head\" \"column head\" ...)))\n")))))
+  (\"row head 2\" \"hyperlink 2\" \"column head\" \"column head\" ...)\n\
+  ...\n\
+  ))\n")))))
 
 
 (define (serve port-no)
