@@ -1,0 +1,56 @@
+I am documenting a contextual advertising system consisting of over 30
+modules, including backend RPC servers and daemons, and hundreds of
+product featuers, where each feature involves one or more modules.  To
+make the document clear and clean, the team wants a matrix of modules
+and features at the beginning of the document.  So I wrote
+matrix-server, an HTTP server written in Lisp, to draw the matrix as
+an HTML table.
+
+In general, the system works in the following procedure: (Suppose that
+our document server is http://matrix.local, served by Nginx.)
+
+1. The browser access the document server for the HTML document, say
+     http://matrix.local/matrix-client.html.
+
+2. The Javascript in matrix-client.html get the file content of
+   http://matrix.local/table.ss, the file defining the table content.
+
+3. The Javascript then POST the table content to
+   http://matrix.local/matrix, which is a proxy_pass to the
+   matrix-server running on localhost:9988.
+
+It is notable that we have to set up the matrix-server as a proxy_pass
+of Nginx (aka. reverse proxy), but cannot let it run and listen on
+matrix.local:9988.  This is because that matrix.local and
+matrix.local:9988 are different servers, and the Ajax security policy
+implemented in most morden Web browsers forbidden Javascript programs
+downloaded from a server (matrix.local in this case) to access
+resources on another server (matrix.local:9988 in this case).  Whereas
+the reverse proxy makes matrix.local:9988 looks like
+matrix.local/matrix by the Web browser.
+
+Here follows part of the Nginx configuration of the document server,
+including the reverse proxy setting:
+
+server {
+  listen       80;
+  server_name  matrix.local;
+  root /Users/wyi/Projects/draw-html-table;
+
+  autoindex on;
+
+  location / {
+    index index.html index.php;
+    try_files $uri $uri/ @backend;
+  }
+
+  location /matrix/ {
+    proxy_pass http://localhost:9988;
+  }
+
+  # if you don't like seeing all the errors for missing favicon.ico in root
+  location = /favicon.ico { access_log off; log_not_found off; }
+
+  # if you don't like seeing errors for a missing robots.txt in root
+  location = /robots.txt { access_log off; log_not_found off; }
+}
