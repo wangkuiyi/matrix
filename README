@@ -1,3 +1,24 @@
+--------------------
+  Overview
+--------------------
+
+This projects contains an HTTP server matrix-server.rkt written in
+Racket (a dialect of Lisp) and an Ajax client matrix-client.js in
+Javascript.
+
+The server accepts table definition sent from the client, and renders
+the table into a beautiful HTML table.  The client then places the
+table into an HTML page.
+
+To set up your Web-based document system using matrix-server, you need
+to configure a reverse proxy, which alias the matrix-server to a path
+of the document server.  This can be done using Nginx.  An example
+Nginx configuration is included.
+
+--------------------
+  Motivation
+--------------------
+
 I am documenting a contextual advertising system consisting of over 30
 modules, including backend RPC servers and daemons, and hundreds of
 product featuers, where each feature involves one or more modules.  To
@@ -5,6 +26,10 @@ make the document clear and clean, the team wants a matrix of modules
 and features at the beginning of the document.  So I wrote
 matrix-server, an HTTP server written in Lisp, to draw the matrix as
 an HTML table.
+
+--------------------
+  How It Works
+--------------------
 
 In general, the system works in the following procedure: (Suppose that
 our document server is http://matrix.local, served by Nginx.)
@@ -29,28 +54,9 @@ resources on another server (matrix.local:9988 in this case).  Whereas
 the reverse proxy makes matrix.local:9988 looks like
 matrix.local/matrix by the Web browser.
 
-Here follows part of the Nginx configuration of the document server,
-including the reverse proxy setting:
+--------------------
+  Use It!
+--------------------
 
-server {
-  listen       80;
-  server_name  matrix.local;
-  root /Users/wyi/Projects/draw-html-table;
-
-  autoindex on;
-
-  location / {
-    index index.html index.php;
-    try_files $uri $uri/ @backend;
-  }
-
-  location /matrix/ {
-    proxy_pass http://localhost:9988;
-  }
-
-  # if you don't like seeing all the errors for missing favicon.ico in root
-  location = /favicon.ico { access_log off; log_not_found off; }
-
-  # if you don't like seeing errors for a missing robots.txt in root
-  location = /robots.txt { access_log off; log_not_found off; }
-}
+For how to set up a document server using matrix-server.rkt, please
+refer to document_server.nginx.conf.
