@@ -10,21 +10,15 @@ function mcCreateXMLHTTP() {
     return xmlhttp;
 }
 
-function mcDrawMatrix(table_data_path, matrix_server_path, element_id) {
-    var table = mcCreateXMLHTTP();
-    table.onreadystatechange = function() {
-        if (table.readyState == 4 && table.status == 200) {
-            var render = mcCreateXMLHTTP();
-            render.onreadystatechange = function () {
-                if (render.readyState == 4 && render.status == 200) {
-                    document.getElementById(element_id).innerHTML =
-                        render.responseText;
-                }
-            }
-            render.open("POST", matrix_server_path, true);
-            render.send(table.responseText);
+function mcDrawMatrix(table_content_id, matrix_server_path, table_id) {
+    var render = mcCreateXMLHTTP();
+    render.onreadystatechange = function () {
+        if (render.readyState == 4 && render.status == 200) {
+            document.getElementById(table_id).innerHTML =
+                render.responseText;
         }
     }
-    table.open("GET", table_data_path, true);
-    table.send();
+    render.open("POST", matrix_server_path, true);
+    render.send(document.getElementById(table_content_id).innerHTML);
+    document.getElementById(table_content_id).innerHTML = "";
 }

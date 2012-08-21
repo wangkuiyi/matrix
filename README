@@ -34,13 +34,15 @@ an HTML table.
 In general, the system works in the following procedure: (Suppose that
 our document server is http://matrix.local, served by Nginx.)
 
-1. The browser access the document server for the HTML document, say
-     http://matrix.local/matrix-client.html.
+1. The browser access the document server for the HTML document, say,
+   http://matrix.local/matrix-client.html.
 
-2. The Javascript in matrix-client.html get the file content of
-   http://matrix.local/table.ss, the file defining the table content.
+2. The Javascript in matrix-client.html gets the file content from
+   document server, say, http://matrix.local/table.ss, or loads the
+   content from an HTML tag with "element_id" using Javascript API
+   document.getElementById("element_id").innerHTML.
 
-3. The Javascript then POST the table content to
+3. The Javascript then POSTs the table content to
    http://matrix.local/matrix, which is a proxy_pass to the
    matrix-server running on localhost:9988.
 
@@ -71,7 +73,7 @@ with the following format:
   ...
   ))
 
-For an example, please refer to table.ss in the source tree.
+For an example, please refer to demo_document.html.
 
 --------------------
   Use It!
